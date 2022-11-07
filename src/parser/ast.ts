@@ -139,6 +139,7 @@ export type LiquidTagNamed =
   | LiquidTagPaginate
   | LiquidTagRender
   | LiquidTagSection
+  | LiquidTagSections
   | LiquidTagTablerow
   | LiquidTagUnless;
 
@@ -248,6 +249,8 @@ export interface LiquidTagInclude
 
 export interface LiquidTagSection
   extends LiquidTagNode<NamedTags.section, LiquidString> {}
+export interface LiquidTagSections
+  extends LiquidTagNode<NamedTags.sections, LiquidString> {}
 export interface LiquidTagLayout
   extends LiquidTagNode<NamedTags.layout, LiquidExpression> {}
 
@@ -918,6 +921,13 @@ function toNamedLiquidTag(
 
     case NamedTags.layout:
     case NamedTags.section: {
+      return {
+        ...liquidTagBaseAttributes(node, source),
+        name: node.name,
+        markup: toExpression(node.markup, source) as LiquidString,
+      };
+    }
+    case NamedTags.sections: {
       return {
         ...liquidTagBaseAttributes(node, source),
         name: node.name,
